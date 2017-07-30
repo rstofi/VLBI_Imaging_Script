@@ -25,8 +25,16 @@ The script was tested on Ubuntu 16.04.2 LTS release.
 Development
 ===========
 
+This package is meant to be a widely used imaging tool, thus further developments are encouraged. Using Git_ version contol package, you can check out the latest sources from GitHub_ using::
 
+        ?
 
+Contribution
+============
+
+The package goal is to be an effective and useful tool for radio astronomy community, thus the gereral guidelines for contribution are the following:
+
+Any contribution should be done trough GitHub_ pull request system. All submitted code should be well-commented and documented. It is reccomended to also submit an example for the submitted funcitons.
 
 Authors
 =======
@@ -41,3 +49,5 @@ Package Authos
 .. _Matplotlib: http://matplotlib.org
 .. _AstroPy: http://www.astropy.org/
 .. _difmap: https://science.nrao.edu/facilities/vlba/docs/manuals/oss2013a/post-processing-software/difmap
+.. _Git: http://git-scm.com/
+.. _GitHub: http://www.github.com
