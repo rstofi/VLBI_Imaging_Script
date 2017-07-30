@@ -26,6 +26,8 @@ Development
 ===========
 
 
+
+
 Authors
 =======
 
@@ -38,4 +40,4 @@ Package Authos
 .. _Numpy: http://www.numpy.org
 .. _Matplotlib: http://matplotlib.org
 .. _AstroPy: http://www.astropy.org/
-.. _difmap: http://ftp.astro.caltech.edu/pub/difmap/difmap.html
+.. _difmap: https://science.nrao.edu/facilities/vlba/docs/manuals/oss2013a/post-processing-software/difmap
