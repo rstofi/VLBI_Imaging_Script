@@ -1,2 +1,10 @@
-# VLBI_Imaging_Script
-Python scripts using difmap for imaging VLBI data (pre-calibrated e.g with APES).
+.. -*- mode: rst -*-
+
+=======================================
+VLBI Imaging Script
+=======================================
+
+.. image:: https://img.shields.io/badge/license-%20GNU%20GPLv3-blue.svg?style=flat
+        :target: https://github.com/rstofi/VLBI_Imaging_Script/blob/master/LICENSE
+
+This repository contains a python module build on difmap. 
