@@ -5,12 +5,12 @@ import subprocess; #for running difmap on Linux
 import pylab; #for data reading
 
 def difmap_imaging_script(visibility_file,
-							output_name,
-							clean_sigma,
-							map_size,
-							pixel_size,
-							observation_length,
-							**kwargs):
+						output_name,
+						clean_sigma,
+						map_size,
+						pixel_size,
+						observation_length,
+						**kwargs):
 	"""
 	This function creates the difmap imaging .log script
 	"""
@@ -137,19 +137,19 @@ quit'''.format(obj_file=visibility_file,
 	fn.close();
 
 def difmap_modeling_script(visibility_file,
-							output_name,
-							clean_sigma,
-							map_size,
-							pixel_size,
-							observation_length,
-							model_sigma,
-							phi,
-							major_axis,
-							minor_axis,
-							model_type,
-							model_iter,
-							max_jet_component_number,
-							**kwargs):
+						output_name,
+						clean_sigma,
+						map_size,
+						pixel_size,
+						observation_length,
+						model_sigma,
+						phi,
+						major_axis,
+						minor_axis,
+						model_type,
+						model_iter,
+						max_jet_component_number,
+						**kwargs):
 	"""
 	This function creates the difmap modeling .log script
 	"""
