@@ -1,5 +1,10 @@
 from VLBI_imaging_functions import *;
 
+### Test header ###
+header(visibility_file='J0017+8135_S_1998_10_01_pus_vis.fits');
+
+exit();
+
 ### Imaging script ###
 '''
 difmap_imaging_script(visibility_file='J0017+8135_S_1998_10_01_pus_vis.fits',
