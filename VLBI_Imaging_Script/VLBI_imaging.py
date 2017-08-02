@@ -40,3 +40,7 @@ run_difmap_imaging_script(script_name='model_test_run');
 image_parameters = get_image_parameters_from_log();
 
 print(image_parameters);
+
+modelcomps = get_model_parameters_from_mod(modfile_name='J0017+8135_S_1998_10_01');
+
+print(modelcomps);

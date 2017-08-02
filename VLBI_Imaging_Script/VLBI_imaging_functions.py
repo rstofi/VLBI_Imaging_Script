@@ -356,10 +356,10 @@ def get_image_parameters_from_log(difmap_output='difmap.log',beam_err=0.1):
 	marking = False;
 	while True:
 		line = logfile.readline();
-		if line.find("! MARKING_STRING") != -1:
+		if line.find('! MARKING_STRING') != -1:
 			marking = True;		
 		elif marking == True:	
-			if line.find("! END_MARKING") != -1:
+			if line.find('! END_MARKING') != -1:
 				break;
 			elif '!' in line:
 				logf += line;
@@ -367,11 +367,11 @@ def get_image_parameters_from_log(difmap_output='difmap.log',beam_err=0.1):
 	
 	### remove ! characters ###
 	for char in logf:
-            if char is "!":
-                logf = logf.replace(char, "");
+            if char is '!':
+                logf = logf.replace(char, '');
 	
 	### create a list with the image values ###
-	logf = logf.split(" ");#create list from string
+	logf = logf.split(' ');#create list from string
 	logf = filter(str.strip, logf);#remove whitespace
 	logf = list(map(float, logf));#set values to float
 	
@@ -402,3 +402,63 @@ def get_image_parameters_from_log(difmap_output='difmap.log',beam_err=0.1):
 	image_paramters = np.asarray([flux_peak,map_rms,cmul,beam_min,beam_max,beam_angle,beamx,beamy]);
 	
 	return image_paramters;
+
+def get_model_parameters_from_mod(modfile_name):
+	"""
+	modelcomps is a matrix containing the propertyes of the fitted model components.
+	Each row corresponds to a model component.
+	The first colum is the flux below the component.
+	The second column is the relative RA of the component.
+	The third column is the relative DEC of the component.
+	The fourt column is the major axis size (radius size if the component is circe).
+	The fifth column is the axial ratio.
+	The sixth column is the position angle (in radians from North -> East).
+	The seventh column is the spec index.
+	"""
+	
+	fmodelcomp = open('%s.mod' %modfile_name, 'r');
+
+	modelcomps = '';
+	while 1:
+		line = fmodelcomp.readline();
+		if '!' not in line:
+			modelcomps += line;
+		if not line:break;
+
+	### remove v and \n characters ###
+	for char in modelcomps:
+		if char is 'v':
+			modelcomps = modelcomps.replace(char, "");
+		elif char is '\n':
+			modelcomps = modelcomps.replace(char, " ");
+	
+	### create a list with the image values ###
+	modelcomps = modelcomps.split(' ');#create list from string
+	modelcomps = filter(str.strip, modelcomps);#remove whitespace
+	modelcomps = list(map(float, modelcomps));#set values to float
+
+	### compute model components RA and Dec coordinates ###
+	j = len(modelcomps);
+	i = 0;
+	while i <= (j-(j/7)):
+		r = modelcomps[i+1];
+		theta = np.radians(modelcomps[i+2]);
+
+		modelcomps[i+1] = r*np.sin(theta); #RA or x direction
+		modelcomps[i+2] = r*np.cos(theta); #Dec or y direction
+
+		x0 = modelcomps[1];
+		y0 = modelcomps[2];
+
+		modelcomps[i+1] = modelcomps[i+1]-x0;
+		modelcomps[i+2] = modelcomps[i+2]-y0;
+
+		i += 7;
+	
+	### create numpy matrix of model components parameters ###
+	modelcomps = np.asarray(modelcomps);
+	modelcomps = np.reshape(modelcomps,(int(modelcomps.size/7),7));
+	
+	fmodelcomp.close();
+	
+	return modelcomps;
