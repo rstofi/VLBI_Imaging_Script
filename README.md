@@ -42,7 +42,7 @@ Authors
 Package Authos
 --------------
 * Kristóf Rozgonyi <rstofi@gmail.com> https://github.com/rstofi
-* Frey Sándor <frey.sandor@csfk.mta.hu>
+* Sándor Frey <frey.sandor@csfk.mta.hu>
 
 .. _paper: https://arxiv.org/abs/1701.04037
 .. _Python: http://www.python.org
