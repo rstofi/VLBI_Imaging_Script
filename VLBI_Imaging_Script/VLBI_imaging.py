@@ -1,9 +1,7 @@
 from VLBI_imaging_functions import *;
 
 ### Test header ###
-header(visibility_file='J0017+8135_S_1998_10_01_pus_vis.fits');
-
-exit();
+#header(visibility_file='J0017+8135_S_1998_10_01_pus_vis.fits');
 
 ### Imaging script ###
 '''
@@ -16,9 +14,10 @@ difmap_imaging_script(visibility_file='J0017+8135_S_1998_10_01_pus_vis.fits',
 					script_name='test_run');
 
 run_difmap_imaging_script(script_name='test_run');
-'''
+#'''
 
 ### Modelling script ###
+#'''
 difmap_modeling_script(visibility_file='J0017+8135_S_1998_10_01_pus_vis.fits',
 					output_name='J0017+8135_S_1998_10_01',
 					clean_sigma=6,
@@ -35,3 +34,9 @@ difmap_modeling_script(visibility_file='J0017+8135_S_1998_10_01_pus_vis.fits',
 					script_name='model_test_run');
 
 run_difmap_imaging_script(script_name='model_test_run');
+#'''
+
+### Get image parameters from difmap output ###
+image_parameters = get_image_parameters_from_log();
+
+print(image_parameters);

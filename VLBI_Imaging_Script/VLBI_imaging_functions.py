@@ -18,10 +18,10 @@ def header(visibility_file,show_header=False):
 	observation_date = fits.getval(visibility_file,'DATE-OBS');
 	telescop = fits.getval(visibility_file,'TELESCOP');
 	obs_freq = fits.getval(visibility_file,'CRVAL4');
+		
+	observation_parameters = np.asarray([source,telescop,observation_date,obs_freq]);
 	
-	#print(source,telescop,observation_date,obs_freq);
-	
-	return source,telescop,observation_date,obs_freq;
+	return observation_parameters;
 
 def difmap_imaging_script(visibility_file,
 						output_name,
@@ -56,10 +56,6 @@ def difmap_imaging_script(visibility_file,
 	observe {obj_file}
 	select i
 	mapsize map_size,pixel_size
-
-	print "HEADER"
-	header
-	print "END_OF_HEADER"
 
 	startmod "",1
 	uvw 2,0
@@ -143,7 +139,7 @@ def difmap_imaging_script(visibility_file,
 	print "END_MARKING"
 
 	!save clean map into a fits file
-	save clean_map_{obj}
+	save {obj}
 
 	!quit from difmap
 	quit'''.format(obj_file=visibility_file,
@@ -205,10 +201,6 @@ def difmap_modeling_script(visibility_file,
 	observe {obj_file}
 	select i
 	mapsize map_size,pixel_size
-
-	print "HEADER"
-	header
-	print "END_OF_HEADER"
 
 	startmod "",1
 	uvw 2,0
@@ -281,25 +273,9 @@ def difmap_modeling_script(visibility_file,
 	!device {obj}.ps/vps
 	!mapl clean, false 
 
-	!get clean image and beam statistics
-	print "MARKING_STRING"
-	print peak(flux)
-	print imstat(rms)
-	print cmul
-	print imstat(bmin)
-	print imstat(bmaj)
-	print imstat(bpa)
-	print "END_MARKING"
-
 	!Modeling
 
 	clrmod true
-
-	!Print flux
-	print "FLUX_MARKING"
-	print imstat(rms)
-	print peak(flux)
-	print "END_FLUX_MARKING"
 
 	!Fit first (elliptical-gaussian) component
 
@@ -316,17 +292,26 @@ def difmap_modeling_script(visibility_file,
 		end if
 	until(i >= {max_loop})
 
-
 	!Image with model components
 	!device {obj}.ps/vcps
 	device {obj}.ps/vps
 	mapl clean, true 
 
+	!get clean image and beam statistics
+	print "MARKING_STRING"
+	print peak(flux)
+	print imstat(rms)
+	print cmul
+	print imstat(bmin)
+	print imstat(bmaj)
+	print imstat(bpa)
+	print "END_MARKING"
+
 	!Write model components parameters to a .mod file
 	wmod {obj}.mod
 
 	!save modelfit map
-	save model_map_{obj}
+	save {obj}
 
 	!quit from difmap
 	quit'''.format(obj_file=visibility_file,
@@ -356,3 +341,64 @@ def run_difmap_imaging_script(script_name,show_difmap_output=False):
 		shell_run_command += " >/dev/null"
 	
 	os.system(shell_run_command);
+
+def get_image_parameters_from_log(difmap_output='difmap.log',beam_err=0.1):
+	"""
+	Get image parameters from difmap output logfile
+	"""
+	
+	### use difmap.log for image parameters ###
+	logfile = open(difmap_output, "r");
+
+	### create a string from logfile between marking strings using the ! comment lines ###
+	logf = "";
+	
+	marking = False;
+	while True:
+		line = logfile.readline();
+		if line.find("! MARKING_STRING") != -1:
+			marking = True;		
+		elif marking == True:	
+			if line.find("! END_MARKING") != -1:
+				break;
+			elif '!' in line:
+				logf += line;
+		if not line:break;
+	
+	### remove ! characters ###
+	for char in logf:
+            if char is "!":
+                logf = logf.replace(char, "");
+	
+	### create a list with the image values ###
+	logf = logf.split(" ");#create list from string
+	logf = filter(str.strip, logf);#remove whitespace
+	logf = list(map(float, logf));#set values to float
+	
+	### map parameters ###
+	flux_peak = logf[0];#in Jy/beam
+	map_rms = logf[1];#in Jy/beam
+	cmul = logf[2]; #in Jy/beam -> Difmap use this value to create clean maps
+	beam_min = logf[3]; 
+	beam_max = logf[4];
+	beam_angle = logf[5];
+	
+	bpa = np.radians(beam_angle) #convert degrees to radians
+
+	### compute the axis intersections of the beam -> NEED CITATION! ###
+	beamx = np.sqrt(np.power(beam_max,2)*np.power(beam_min,2)*(np.power(beam_max,2)*np.power(np.cos(bpa),2)+
+					np.power(beam_min,2)*np.power(np.sin(bpa),2)))/(np.power(beam_max,2)*np.power(np.cos(bpa),2)+
+					np.power(beam_min,2)*np.power(np.sin(bpa),2));
+	beamy = np.sqrt(np.power(beam_max,2)*np.power(beam_min,2)*(np.power(beam_max,2)*np.power(np.sin(bpa),2)+
+					np.power(beam_min,2)*np.power(np.cos(bpa),2)))/(np.power(beam_max,2)*np.power(np.sin(bpa),2)+
+					np.power(beam_min,2)*np.power(np.cos(bpa),2));
+
+	### compute the position error ###
+	beamx = beamx*beam_err;
+	beamy = beamy*beam_err;
+	
+	logfile.close();
+	
+	image_paramters = np.asarray([flux_peak,map_rms,cmul,beam_min,beam_max,beam_angle,beamx,beamy]);
+	
+	return image_paramters;
