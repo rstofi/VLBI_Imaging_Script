@@ -25,7 +25,7 @@ The script was tested on Ubuntu 16.04.2 LTS release.
 
 This package is meant to be a widely used imaging tool, thus further developments are encouraged. Using [Git][] version contol package, you can check out the latest sources from [GitHub][] using:
 
- git clone https://github.com/rstofi/VLBI_Imaging_Script.git
+	git clone https://github.com/rstofi/VLBI_Imaging_Script.git
 
 ## Contribution
 
