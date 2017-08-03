@@ -5,6 +5,13 @@ import subprocess; #for running difmap on Linux
 import pylab; #for data reading
 from astropy.io import fits; #for reading .fits file header
 
+def data_setup(path_to_original_data,visibility_file):
+	"""
+	Moves the datafile to the working folder
+	"""
+
+	os.system('mv %s/%s .' %(path_to_original_data,visibility_file));
+	
 def header(visibility_file,show_header=False):
 	"""
 	Read .fits file header and return key informations.
@@ -462,3 +469,70 @@ def get_model_parameters_from_mod(modfile_name):
 	fmodelcomp.close();
 	
 	return modelcomps;
+
+def clear_output_files(input_script_name,
+					output_file_name,
+					keep_output_log=False,
+					keep_fits=False,
+					keep_par=False,
+					keep_uvf=False,
+					keep_mod=False,
+					keep_ps=False):
+	"""
+	Clear the used trash output files
+	"""
+
+	### remove difmap input logfile ###
+	os.system('rm %s.log'%input_script_name);
+		
+	### remove output files ###
+	if not keep_output_log:
+		os.system('rm difmap.log');#remove difmap logfile
+	if not keep_fits:
+		os.system('rm %s/%s.fits' %(os.getcwd(),output_file_name));#remove clean .fits file
+	if not keep_par:
+		os.system('rm %s/%s.par' %(os.getcwd(),output_file_name));#remove .par file
+	if not keep_uvf:
+		os.system('rm %s/%s.uvf' %(os.getcwd(),output_file_name));#remove .uvf file
+	if not keep_mod:
+		os.system('rm %s/%s.mod' %(os.getcwd(),output_file_name));#remove .uvf file
+	if not keep_ps:
+		os.system('rm %s/%s.ps' %(os.getcwd(),output_file_name));#remove .uvf file	
+
+def data_organizer(path_to_original_data,
+				visibility_file,
+				output_file_name=False,
+				copy_output_log=False,
+				copy_fits=False,
+				copy_par=False,
+				copy_uvf=False,
+				copy_mod=False,
+				copy_ps=False,
+				**kwargs):
+	"""
+	Organize the output data
+	"""
+	
+	### move the datafile back to it's original folder ###
+	os.system('mv %s %s' %(visibility_file,path_to_original_data));
+	
+	### move other output files ###
+	if output_file_name:
+		if copy_output_log:
+			if 'path_output_log' in kwargs and 'output_log_newname' in kwargs:
+				os.system('mv difmap.log %s/%s' %(kwargs['path_output_log'],kwargs['output_log_newname']));
+		if copy_fits:
+			if 'path_fits' in kwargs:
+				os.system('mv %s.fits %s' %(output_file_name,kwargs['path_fits']));
+		if copy_par:
+			if 'path_par' in kwargs:
+				os.system('mv %s.par %s' %(output_file_name,kwargs['path_par']));
+		if copy_par:
+			if 'path_uvf' in kwargs:
+				os.system('mv %s.uvf %s' %(output_file_name,kwargs['path_uvf']));
+		if copy_par:
+			if 'path_mod' in kwargs:
+				os.system('mv %s.mod %s' %(output_file_name,kwargs['path_mod']));
+		if copy_par:
+			if 'path_ps' in kwargs:
+				os.system('mv %s.ps %s' %(output_file_name,kwargs['path_ps']));
