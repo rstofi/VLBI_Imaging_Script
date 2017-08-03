@@ -1,6 +1,4 @@
-# VLBI Imaging Script 
-
-[![license badge][license-badge]][license-link]
+# VLBI Imaging Script  [![license badge][license-badge]][license-link]
 
 [license-badge]: https://img.shields.io/badge/license-%20GNU%20GPLv3-blue.svg?style=flat
 [license-link]:  https://github.com/rstofi/VLBI_Imaging_Script/blob/master/LICENSE
