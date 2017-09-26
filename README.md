@@ -29,7 +29,7 @@ This package is meant to be a widely used imaging tool, thus further development
 
 The package goal is to be an effective and useful tool for radio astronomy community, thus the gereral guidelines for contribution are the following:
 
-Any contribution should be done trough GitHub pull request system. All submitted code should be well-commented and documented. It is reccomended to also submit an example for the submitted funcitons.
+Any contribution should be done trough GitHub pull request system using the 'developer' branch. All submitted code should be well-commented and documented. It is reccomended to also submit an example for the submitted funcitons if the cahnge is huge/make diffrence.
 
 ## Authors
 ### Package Authos
