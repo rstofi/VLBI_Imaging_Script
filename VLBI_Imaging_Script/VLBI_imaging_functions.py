@@ -477,7 +477,8 @@ def clear_output_files(input_script_name,
 					keep_par=False,
 					keep_uvf=False,
 					keep_mod=False,
-					keep_ps=False):
+					keep_ps=False,
+					keep_python_build=False):
 	"""
 	Clear the used trash output files
 	"""
@@ -498,6 +499,8 @@ def clear_output_files(input_script_name,
 		os.system('rm %s/%s.mod' %(os.getcwd(),output_file_name));#remove .uvf file
 	if not keep_ps:
 		os.system('rm %s/%s.ps' %(os.getcwd(),output_file_name));#remove .uvf file	
+	if not keep_python_build:
+		os.system('rm -r __pycache__');#remove tha python build folder __pycache__
 
 def data_organizer(path_to_original_data,
 				visibility_file,
