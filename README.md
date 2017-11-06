@@ -1,7 +1,9 @@
-# VLBI Imaging Script  [![license badge][license-badge]][license-link]
+# VLBI Imaging Script  [![license badge][license-badge]][license-link] [![stable version][stable version-badge]][release]
 
-[license-badge]: https://img.shields.io/badge/license-%20GNU%20GPLv3-blue.svg?style=flat
+[license-badge]: https://img.shields.io/packagist/l/doctrine/orm.svg
 [license-link]:  https://github.com/rstofi/VLBI_Imaging_Script/blob/master/LICENSE
+[stable version-badge]: https://img.shields.io/badge/stable-v0.1-blue.svg
+[release]: https://github.com/rstofi/VLBI_Imaging_Script/releases
 
 Python module for imaging VLBI data based on *difmap*. It contains a growing library with functions for imaging and modelling (pre-calibrated e.g. with AIPS) VLBI observations. These scripts are designed for automatic imaging and modeling of hundreds or thoustand 'typical' sources. The script was tested on the VIPS survey (see our [paper][]), nevertheless more simple examples are presented here.
 
